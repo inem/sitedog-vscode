@@ -1,0 +1,68 @@
+{
+  "name": "sitedog-preview",
+  "displayName": "SiteDog Preview",
+  "description": "Live preview for SiteDog project cards",
+  "version": "0.1.0",
+  "publisher": "sitedog",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "sitedog",
+    "preview",
+    "yaml",
+    "development",
+    "cards"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sitedog.showPreview",
+        "title": "SiteDog: Show Preview",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "sitedog.refreshPreview",
+        "title": "SiteDog: Refresh Preview",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "sitedog.showPreview",
+          "when": "resourceFilename == 'sitedog.yml'",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "sitedog.showPreview",
+          "when": "resourceFilename == 'sitedog.yml'",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "activationEvents": [
+    "onLanguage:yaml"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
