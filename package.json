@@ -2,7 +2,7 @@
   "name": "sitedog-preview",
   "displayName": "Sitedog Preview",
   "description": "Live preview for SiteDog project cards",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "publisher": "nemytchenko",
   "repository": {
     "type": "git",

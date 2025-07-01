@@ -47,11 +47,20 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    // Watch for file changes
+    // Watch for file changes (refresh on save)
     const watcher = vscode.workspace.createFileSystemWatcher('**/sitedog.yml');
     watcher.onDidChange(uri => {
         if (previewPanel) {
+            console.log('SiteDog: File changed, refreshing preview:', uri.fsPath);
             updatePreview(uri);
+        }
+    });
+
+    // Additional save event listener for more reliable refresh on save
+    const saveListener = vscode.workspace.onDidSaveTextDocument(document => {
+        if (previewPanel && path.basename(document.fileName) === 'sitedog.yml') {
+            console.log('SiteDog: File saved, refreshing preview:', document.fileName);
+            updatePreviewFromDocument(document);
         }
     });
 
@@ -62,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(showPreview, refreshPreview, convertDates, watcher);
+    context.subscriptions.push(showPreview, refreshPreview, convertDates, watcher, saveListener);
 }
 
 function convertRelativeDatesInDocument(editor: vscode.TextEditor) {
