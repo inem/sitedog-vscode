@@ -1,7 +1,7 @@
 sitedog-vscode:
   What is it: VS Code extension
   Repository: https://github.com/inem/sitedog-vscode
-  Marketplace: https://marketplace.visualstudio.com/manage/publishers/nemytchenko
+  Marketplace: https://marketplace.visualstudio.com/manage/publishers/nemytchenko/extensions/sitedog-preview/hub?_a=acquisition
   Tokens: https://dev.azure.com/rbbr-io/_usersSettings/tokens
   Token:
     expires in: 90 days
