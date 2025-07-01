@@ -1,4 +1,9 @@
 sitedog-vscode:
   role: VS Code extension
   Repository: https://github.com/inem/sitedog-vscode
-
+  Marketplace: https://marketplace.visualstudio.com/manage/publishers/nemytchenko
+  Tokens: https://dev.azure.com/rbbr-io/_usersSettings/tokens
+  Token:
+    expires in: 90 days
+    expires_date: 2025-09-29
+    name: vscode publish

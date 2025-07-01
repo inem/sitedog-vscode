@@ -1,15 +1,16 @@
 include make-*.mk
 
 build:
+	npm run compile
 	vsce package
 
 install:
-	code --install-extension sitedog-preview-0.1.0.vsix
+	code --install-extension $$(ls -t sitedog-preview-*.vsix | head -1)
 
 publish:
 	vsce publish
 
 login:
-	vsce login
+	vsce login nemytchenko
 
 #sitedog

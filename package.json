@@ -2,8 +2,8 @@
   "name": "sitedog-preview",
   "displayName": "Sitedog Preview",
   "description": "Live preview for SiteDog project cards",
-  "version": "0.1.0",
-  "publisher": "sitedog",
+  "version": "0.3.2",
+  "publisher": "nemytchenko",
   "repository": {
     "type": "git",
     "url": "https://github.com/sitedog/sitedog-vscode.git"
@@ -31,8 +31,12 @@
       },
       {
         "command": "sitedog.refreshPreview",
-        "title": "Sitedog: Refresh Preview",
-        "icon": "$(refresh)"
+        "title": "Sitedog: Refresh Preview"
+      },
+      {
+        "command": "sitedog.convertRelativeDates",
+        "title": "Sitedog: Convert Relative Dates",
+        "icon": "$(clock)"
       }
     ],
     "menus": {
@@ -41,11 +45,21 @@
           "command": "sitedog.showPreview",
           "when": "resourceFilename == 'sitedog.yml'",
           "group": "navigation"
+        },
+        {
+          "command": "sitedog.convertRelativeDates",
+          "when": "resourceFilename == 'sitedog.yml'",
+          "group": "1_modification"
         }
       ],
       "editor/title": [
         {
           "command": "sitedog.showPreview",
+          "when": "resourceFilename == 'sitedog.yml'",
+          "group": "navigation"
+        },
+        {
+          "command": "sitedog.convertRelativeDates",
           "when": "resourceFilename == 'sitedog.yml'",
           "group": "navigation"
         }

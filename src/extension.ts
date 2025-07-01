@@ -8,6 +8,17 @@ let previewPanel: vscode.WebviewPanel | undefined;
 export function activate(context: vscode.ExtensionContext) {
     console.log('SiteDog Preview extension is now active!');
 
+    // Register command to convert relative dates
+    let convertDates = vscode.commands.registerCommand('sitedog.convertRelativeDates', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        convertRelativeDatesInDocument(editor);
+    });
+
     // Register command to show preview
     let showPreview = vscode.commands.registerCommand('sitedog.showPreview', () => {
         const editor = vscode.window.activeTextEditor;
@@ -51,7 +62,76 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(showPreview, refreshPreview, watcher);
+    context.subscriptions.push(showPreview, refreshPreview, convertDates, watcher);
+}
+
+function convertRelativeDatesInDocument(editor: vscode.TextEditor) {
+    const document = editor.document;
+    const text = document.getText();
+
+    // Regex to match patterns like "expires in: X days", "expires in: X months", etc.
+    const relativeeDatePattern = /expires in:\s*(\d+)\s*(days?|months?|years?|weeks?)/gi;
+
+    const edits: vscode.TextEdit[] = [];
+    let match;
+
+    while ((match = relativeeDatePattern.exec(text)) !== null) {
+        const fullMatch = match[0];
+        const amount = parseInt(match[1]);
+        const unit = match[2].toLowerCase();
+
+        // Calculate the target date
+        const now = new Date();
+        let targetDate = new Date(now);
+
+        switch (unit) {
+            case 'day':
+            case 'days':
+                targetDate.setDate(now.getDate() + amount);
+                break;
+            case 'week':
+            case 'weeks':
+                targetDate.setDate(now.getDate() + (amount * 7));
+                break;
+            case 'month':
+            case 'months':
+                targetDate.setMonth(now.getMonth() + amount);
+                break;
+            case 'year':
+            case 'years':
+                targetDate.setFullYear(now.getFullYear() + amount);
+                break;
+        }
+
+        // Format the date as YYYY-MM-DD
+        const formattedDate = targetDate.toISOString().split('T')[0];
+
+        // Find the end of the current line to add the new key after it
+        const lineEnd = document.positionAt(match.index! + fullMatch.length);
+        const lineEndPos = new vscode.Position(lineEnd.line, document.lineAt(lineEnd.line).text.length);
+
+        // Create the new line with absolute date
+        const newLine = `\n    expires_date: ${formattedDate}`;
+
+        edits.push(vscode.TextEdit.insert(lineEndPos, newLine));
+    }
+
+    if (edits.length > 0) {
+        // Show a confirmation dialog
+        vscode.window.showInformationMessage(
+            `Found ${edits.length} relative date(s). Convert to absolute dates?`,
+            'Yes', 'No'
+        ).then(selection => {
+            if (selection === 'Yes') {
+                const workspaceEdit = new vscode.WorkspaceEdit();
+                workspaceEdit.set(document.uri, edits);
+                vscode.workspace.applyEdit(workspaceEdit);
+                vscode.window.showInformationMessage(`Converted ${edits.length} relative date(s) to absolute dates.`);
+            }
+        });
+    } else {
+        vscode.window.showInformationMessage('No relative dates found in the current document.');
+    }
 }
 
 function createOrShowPreview(context: vscode.ExtensionContext, uri: vscode.Uri) {
