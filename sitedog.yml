@@ -1,2 +1,4 @@
 sitedog-vscode:
   role: VS Code extension
+  Repository: https://github.com/inem/sitedog-vscode
+

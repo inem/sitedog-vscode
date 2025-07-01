@@ -1,9 +1,13 @@
 {
   "name": "sitedog-preview",
-  "displayName": "SiteDog Preview",
+  "displayName": "Sitedog Preview",
   "description": "Live preview for SiteDog project cards",
   "version": "0.1.0",
   "publisher": "sitedog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sitedog/sitedog-vscode.git"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -22,12 +26,12 @@
     "commands": [
       {
         "command": "sitedog.showPreview",
-        "title": "SiteDog: Show Preview",
+        "title": "Sitedog: Show Preview",
         "icon": "$(preview)"
       },
       {
         "command": "sitedog.refreshPreview",
-        "title": "SiteDog: Refresh Preview",
+        "title": "Sitedog: Refresh Preview",
         "icon": "$(refresh)"
       }
     ],
